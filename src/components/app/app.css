@@ -1,0 +1,15 @@
+/* Выделение */
+* {
+  outline: none;
+}
+
+*:not(input):not(textarea),
+::after,
+::before {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#searchField > div:first-child {
+  padding: 0;
+}

@@ -1,0 +1,12 @@
+.contentPanel {
+    background-color: transparent;
+    display: flex;
+    gap: 12px; 
+    align-items: center;
+}
+.contentPanelWrapper {
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
