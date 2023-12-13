@@ -24,6 +24,9 @@ import {ApiService} from '@/services'
 import { Favorites } from '../favorites'
 import { Filters } from '../filters'
 import { FC, useEffect } from 'react'
+import { Connection } from '@/pages/connection'
+import { SuccessConnectionModalCard } from '@/popouts/SuccessConnectionModalCard'
+import { ErrorConnectionModal } from '@/popouts/ErrorConnectionModal'
 
 export const Layout: FC = () => {
 	const platform = usePlatform()
@@ -49,6 +52,8 @@ export const Layout: FC = () => {
 					onClose={clearModal}
 				>
 					<TestModalCard id="TestModalCard" />
+					<SuccessConnectionModalCard id="SuccessConnection"/>
+					<ErrorConnectionModal id="ErrorConnection"/>
 				</ModalRoot>
 			}
 			popout={popout}
@@ -65,6 +70,7 @@ export const Layout: FC = () => {
 						<Home nav={URL.homePanel} />
 						<User nav={URL.personalPanel} />
 						<Favorites nav={URL.favoritesPanel} />
+						<Connection nav={URL.connectionPanel} />
 						{/* Сюда маршруты для "Мои растения" и "Соединение с горшком" */}
 					</View>
 				</Root>

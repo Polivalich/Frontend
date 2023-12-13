@@ -1,9 +1,10 @@
 import {create} from 'zustand'
 import {createSelectors} from './createSelectors'
+import { ModalIdType } from '@/models'
 
 interface ModalStore {
 	modal: string | undefined
-	setModal: (modal: string | undefined) => void
+	setModal: (modal: ModalIdType | undefined) => void
 	cardModalData: any | null
 	setCardModalData: (data: any) => void
 	clearModal: () => void
