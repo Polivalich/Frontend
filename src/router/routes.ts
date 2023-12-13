@@ -3,31 +3,23 @@ import {RoutesConfig, createHashRouter, createPanel, createRoot, createView} fro
 // Будем обращаться к маршрутам через переменные, чтобы избежать мисспелов
 export enum URL {
 	homeView = 'home',
-	personalProfileView = 'personalProfile',
-	organizationProfileView = 'organizationProfile',
 
 	homePanel = '/',
 	personalPanel = '/personal',
-	organizationPanel = '/organization',
-	filtersPanel = '/filters',
-	prizmaPanel = '/prizma',
-	routePanel = '/route',
+	plantsPanel = '/plants',
 	favoritesPanel = '/favorites',
-	historyPanel = '/history',
-	locationPanel = '/location',
-
-	// old delete later
-	persikPanel = '/persik',
-	componentsPanel = '/components',
-	infoPanel = '/info',
-	testGPTPanel = '/test',
-	testGPTView = 'testGPT',
+	connectionPanel = '/connection',
 }
 
 export const routes = RoutesConfig.create([
 	createRoot('root', [
 		createView(URL.homeView, [
 			createPanel(URL.homePanel, URL.homePanel, []),
+			createPanel(URL.personalPanel, URL.personalPanel, []), // Тут страница пользователя
+
+			createPanel(URL.favoritesPanel, URL.favoritesPanel, []),
+			createPanel(URL.plantsPanel, URL.plantsPanel, []),
+			createPanel(URL.connectionPanel, URL.connectionPanel, []),
 		]),
 	]),
 ])

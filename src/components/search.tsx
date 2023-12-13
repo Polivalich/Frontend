@@ -66,7 +66,7 @@ export const SimpleSearch = ({mobile}: any) => {
 				value={visibleQ}
 				onChange={(e) => setVisibleQ(e.target.value)}
 			/>
-			{searchRes.length &&
+			{searchRes.length > 0 &&
 				searchRes.map((res: mockSearchData) => (
 					<Cell
 						onClick={() => pick(res)}

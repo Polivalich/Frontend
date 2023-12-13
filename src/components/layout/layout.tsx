@@ -65,7 +65,7 @@ export const Layout: FC = () => {
 						<Home nav={URL.homePanel} />
 						<User nav={URL.personalPanel} />
 						<Favorites nav={URL.favoritesPanel} />
-						<Filters nav={URL.filtersPanel} />
+						{/* Сюда маршруты для "Мои растения" и "Соединение с горшком" */}
 					</View>
 				</Root>
 
