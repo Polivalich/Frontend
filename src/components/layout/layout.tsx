@@ -11,7 +11,7 @@ import {
 } from '@vkontakte/vkui'
 
 import {Home} from '@/pages'
-import {TestModalCard} from '@/popouts'
+import {FlowerModal, TestModalCard} from '@/popouts'
 
 import './layout.css'
 import {useModalStore, usePopoutStore, useSnackbarStore} from '@/store'
@@ -21,9 +21,9 @@ import {User} from '@pages/user'
 
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import {ApiService} from '@/services'
-import { Favorites } from '../favorites'
-import { Filters } from '../filters'
-import { FC, useEffect } from 'react'
+import {Favorites} from '../favorites'
+import {Filters} from '../filters'
+import {FC, useEffect} from 'react'
 
 export const Layout: FC = () => {
 	const platform = usePlatform()
@@ -48,7 +48,7 @@ export const Layout: FC = () => {
 					activeModal={modal}
 					onClose={clearModal}
 				>
-					<TestModalCard id="TestModalCard" />
+					<FlowerModal id="FlowerModal" />
 				</ModalRoot>
 			}
 			popout={popout}

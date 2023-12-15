@@ -39,12 +39,24 @@ import {ApiService} from '@/services'
 import {SimpleSearch} from '@/components'
 import {useUserStore} from '@/store'
 import {classNamesString} from '@vkontakte/vkui/dist/lib/classNames'
-import { Plant } from '@/models/api'
+import {Plant} from '@/models/api'
+import FlowerItem from '@/components/flowerItem/flowerItem'
+
+const flowerInfo = {
+	battery: 85,
+	potName: 'Горшок в гостиной',
+	potId: 4599382,
+	flowerName: 'Суккулент',
+	flowerImg: 'https://a-r-s.ru/wp-content/uploads/28-536.jpg',
+	waterLevel: true,
+	schedule: 1,
+}
 
 export const Home: FC<NavIdProps> = (props) => {
 	const platform = usePlatform()
 	const router = useRouteNavigator()
 	const user = useUserStore.use.user()
+	const [currentFlower, setCurrentFlower] = React.useState<string>(flowerInfo.flowerName)
 
 	const [plants, setPlants] = useState<Plant[]>([])
 	const fetchData = async () => {
@@ -52,7 +64,14 @@ export const Home: FC<NavIdProps> = (props) => {
 			const res = await ApiService.getPlants()
 			setPlants(res)
 		} catch (error) {
-			console.error("error while fetching data", error)
+			console.error('error while fetching data', error)
+		}
+	}
+
+	function handleCurrentFlowerChange(flowerName: any) {
+		if (flowerName !== flowerInfo.flowerName) {
+			setCurrentFlower(flowerName)
+			console.log('все круто')
 		}
 	}
 
@@ -94,37 +113,25 @@ export const Home: FC<NavIdProps> = (props) => {
 				<ContentPanel />
 			</div> */}
 			<Spacing size={8}></Spacing>
-			<div className='group_container'>
-				<div className="flower_card">
-					<img
-						src="https://images.unsplash.com/photo-1495231916356-a86217efff12?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						alt="Picture"
-						className="flower_img"
-					/>
-					<div className="flower_content">
-						<div className="flower_card_header">
-							<h3 className="flower_card_title">Название цветка</h3>
-							<p className="flower_card_power">Уровень заряда</p>
-						</div>
-						<div className="flower_card_bottom">some descr</div>
-					</div>
-				</div>
-
-				<div className="flower_card">
-					<img
-						src="https://images.unsplash.com/photo-1495231916356-a86217efff12?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						alt="Picture"
-						className="flower_img"
-					/>
-					<div className="flower_content">
-						<div className="flower_card_header">
-							<h3 className="flower_card_title">Название цветка</h3>
-							<p className="flower_card_power">Уровень заряда</p>
-						</div>
-						<div className="flower_card_bottom">some descr</div>
-					</div>
-				</div>
-				</div>
+			<div className="group_container">
+				<FlowerItem
+					flowerImg={flowerInfo.flowerImg}
+					battery={flowerInfo.battery}
+					potId={flowerInfo.potId}
+					flowerName={currentFlower}
+					potName={flowerInfo.potName}
+					waterLevel={flowerInfo.waterLevel}
+					schedule={flowerInfo.schedule}
+					handleCurrentFlowerChange={handleCurrentFlowerChange}
+				/>
+				{/* <FlowerItem
+					flowerImg={flowerInfo.flowerImg}
+					battery={flowerInfo.battery}
+					potId={flowerInfo.potId}
+					flowerName={flowerInfo.flowerName}
+					potName={flowerInfo.potName}
+				/> */}
+			</div>
 		</Panel>
 	)
 }
