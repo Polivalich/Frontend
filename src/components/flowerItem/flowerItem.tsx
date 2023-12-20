@@ -1,51 +1,63 @@
 import React from 'react'
 import {useModalStore} from '@/store'
-import {Div} from '@vkontakte/vkui'
+import {Avatar, Div, SimpleCell} from '@vkontakte/vkui'
 
 interface FlowerItemProps {
 	battery?: number
 	potName?: string
-	potId?: number
+	potId?: string
 	flowerName?: string
 	flowerImg?: string
-  waterLevel?: boolean
-  schedule?: number
-  handleCurrentFlowerChange?: (newFlower: string | any | undefined) => void
+	waterLevel?: boolean
+	schedule?: number
+	handleCurrentFlowerChange?: (newFlower: string | any | undefined, potId: string | any) => void
+	handleCurrentScheduleChange?: (potId: string, schedule: number) => void
 }
 
-
-const FlowerItem: React.FC<FlowerItemProps> = ({battery, potName, potId, flowerName, flowerImg, waterLevel, schedule, handleCurrentFlowerChange}) => {
+const FlowerItem: React.FC<FlowerItemProps> = ({
+	battery,
+	potName,
+	potId,
+	flowerName,
+	flowerImg,
+	waterLevel,
+	schedule,
+	handleCurrentFlowerChange,
+	handleCurrentScheduleChange,
+}) => {
 	const setModal = useModalStore.use.setModal()
 	const setModalProps = useModalStore.use.setCardModalData()
 	function handleButtonClick() {
 		setModal('FlowerModal')
-		setModalProps({potId, potName, battery, flowerName, waterLevel, schedule, handleCurrentFlowerChange})
+		setModalProps({
+			potId,
+			potName,
+			battery,
+			flowerName,
+			waterLevel,
+			schedule,
+			handleCurrentFlowerChange,
+			handleCurrentScheduleChange,
+		})
 	}
 
-  React.useEffect(() => {
-
-  }, [waterLevel])
+	React.useEffect(() => {}, [waterLevel])
 	return (
-		<Div className="flower_card">
-			<img
-				src={flowerImg}
-				alt={flowerName}
-				className="flower_img"
-			/>
-			<div className="flower_content">
-				<div className="flower_card_header">
-					<h3 className="flower_card_title">{flowerName}</h3>
-					<p className="flower_card_power">Уровень заряда: {battery}</p>
-				</div>
-				<div className="flower_card_bottom">
-					<p>{potName}</p>
-					<button
-						className="flower__btn"
-						onClick={handleButtonClick}
-					></button>
-				</div>
-			</div>
-		</Div>
+		<SimpleCell
+			onClick={handleButtonClick}
+			before={
+				<Avatar
+					src={flowerImg}
+					initials={flowerName}
+					size={80}
+				/>
+			}
+			after={`${battery}%`}
+			subtitle={potName}
+			multiline
+		>
+			{flowerName}
+		</SimpleCell>
 	)
 }
 

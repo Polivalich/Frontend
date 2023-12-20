@@ -23,7 +23,13 @@ import {
 	Title,
 	Text,
 	usePlatform,
+	Placeholder,
+	Button,
+	Tabs,
+	TabsItem,
+	classNames,
 } from '@vkontakte/vkui'
+import {Icon56DoNotDisturbOutline, Icon56SearchLikeFilledOutline} from '@vkontakte/icons'
 import {useRouteNavigator} from '@vkontakte/vk-mini-apps-router'
 import {URL} from '@/router'
 import {
@@ -36,27 +42,60 @@ import {
 import {Content, ContentPanel} from '@/components/content'
 import {useQuery, useQueryClient} from '@tanstack/react-query'
 import {ApiService} from '@/services'
-import {SimpleSearch} from '@/components'
 import {useUserStore} from '@/store'
-import {classNamesString} from '@vkontakte/vkui/dist/lib/classNames'
 import {Plant} from '@/models/api'
 import FlowerItem from '@/components/flowerItem/flowerItem'
 
-const flowerInfo = {
-	battery: 85,
-	potName: 'Горшок в гостиной',
-	potId: 4599382,
-	flowerName: 'Суккулент',
-	flowerImg: 'https://a-r-s.ru/wp-content/uploads/28-536.jpg',
-	waterLevel: true,
-	schedule: 1,
-}
+const flowerInfo: any = [
+	{
+		battery: 85,
+		potName: 'Горшок в гостиной',
+		potId: '4599382',
+		flowerName: 'Кактус',
+		flowerImg:
+			'https://images.unsplash.com/photo-1528476513691-07e6f563d97f?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		waterLevel: true,
+		schedule: 1,
+	},
+	{
+		battery: 23,
+		potName: 'Горшок в спальне',
+		potId: '563882',
+		flowerName: 'Суккулент',
+		flowerImg:
+			'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		waterLevel: false,
+		schedule: 0,
+	},
+	{
+		battery: 62,
+		potName: 'Горшок на балконе',
+		potId: '1926372',
+		flowerName: 'Фиалка',
+		flowerImg:
+			'https://images.unsplash.com/photo-1542728928-0011f81446e5?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		waterLevel: false,
+		schedule: 4,
+	},
+	{
+		battery: 99,
+		potName: 'Мини-горшок',
+		potId: '4594393382',
+		flowerName: 'Сирень',
+		flowerImg:
+			'https://images.unsplash.com/photo-1528476513691-07e6f563d97f?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		waterLevel: true,
+		schedule: 2,
+	},
+]
 
 export const Home: FC<NavIdProps> = (props) => {
+	const [selected, setSelected] = React.useState<string>('plants')
+
 	const platform = usePlatform()
 	const router = useRouteNavigator()
 	const user = useUserStore.use.user()
-	const [currentFlower, setCurrentFlower] = React.useState<string>(flowerInfo.flowerName)
+	const [currentFlower, setCurrentFlower] = React.useState<string>('')
 
 	const [plants, setPlants] = useState<Plant[]>([])
 	const fetchData = async () => {
@@ -68,11 +107,21 @@ export const Home: FC<NavIdProps> = (props) => {
 		}
 	}
 
-	function handleCurrentFlowerChange(flowerName: any) {
-		if (flowerName !== flowerInfo.flowerName) {
-			setCurrentFlower(flowerName)
-			console.log('все круто')
-		}
+	function handleCurrentFlowerChange(flowerName: string, potId: string) {
+		setCurrentFlower(flowerName)
+		flowerInfo?.forEach((flower: any) => {
+			if (potId === flower.potId) {
+				flower.flowerName = flowerName
+			}
+		})
+	}
+
+	function handleCurrentWaterScheduleChange(potId: string, schedule: number) {
+		flowerInfo?.forEach((flower: any) => {
+			if (potId === flower.potId) {
+				flower.schedule = schedule
+			}
+		})
 	}
 
 	return (
@@ -84,7 +133,7 @@ export const Home: FC<NavIdProps> = (props) => {
 		// В Contet запихиваем контент, который будет в нижней части
 		<Panel {...props}>
 			<PanelHeader>POLIVALICH</PanelHeader>
-			<Gradient className={classNamesString('Gradient', platform === Platform.VKCOM && 'Gradient__desktop')}>
+			<Gradient className={classNames('Gradient', platform === Platform.VKCOM && 'Gradient__desktop')}>
 				<Avatar
 					style={{cursor: 'pointer'}}
 					src={user?.photo_100}
@@ -106,32 +155,88 @@ export const Home: FC<NavIdProps> = (props) => {
 				>
 					Пользователь
 				</Text> */}
+				<SimpleCell disabled>Количество ваших горшочков: {flowerInfo.length}</SimpleCell>
+				<Tabs
+					mode="accent"
+					layoutFillMode="auto"
+					withScrollToSelectedTab
+					scrollBehaviorToSelectedTab="nearest"
+				>
+					<HorizontalScroll arrowSize="m">
+						<TabsItem
+							selected={selected === 'plants'}
+							id="tab-plants"
+							onClick={() => {
+								setSelected('plants')
+							}}
+						>
+							Горшки
+						</TabsItem>
+						<TabsItem
+							selected={selected === 'adding'}
+							id="tab-adding"
+							onClick={() => {
+								setSelected('adding')
+							}}
+						>
+							Добавить горшок
+						</TabsItem>
+						<TabsItem
+							selected={selected === 'info'}
+							id="tab-info"
+							onClick={() => {
+								setSelected('info')
+							}}
+						>
+							Информация
+						</TabsItem>
+					</HorizontalScroll>
+				</Tabs>
 			</Gradient>
-
-			{/* <div className='home_header'>
+			<Spacing size={8}></Spacing>
+			<Group>
+				{/* <div className='home_header'>
 				<SimpleSearch mobile={true} />
 				<ContentPanel />
 			</div> */}
-			<Spacing size={8}></Spacing>
-			<div className="group_container">
-				<FlowerItem
-					flowerImg={flowerInfo.flowerImg}
-					battery={flowerInfo.battery}
-					potId={flowerInfo.potId}
-					flowerName={currentFlower}
-					potName={flowerInfo.potName}
-					waterLevel={flowerInfo.waterLevel}
-					schedule={flowerInfo.schedule}
-					handleCurrentFlowerChange={handleCurrentFlowerChange}
-				/>
-				{/* <FlowerItem
-					flowerImg={flowerInfo.flowerImg}
-					battery={flowerInfo.battery}
-					potId={flowerInfo.potId}
-					flowerName={flowerInfo.flowerName}
-					potName={flowerInfo.potName}
-				/> */}
-			</div>
+				<Spacing size={8}></Spacing>
+				{selected === 'plants' ? (
+					flowerInfo.length > 0 ? (
+						flowerInfo?.map((flower: any) => {
+							return (
+								<>
+									<FlowerItem
+										flowerImg={flower.flowerImg}
+										battery={flower.battery}
+										potId={flower.potId}
+										flowerName={flower.flowerName}
+										potName={flower.potName}
+										waterLevel={flower.waterLevel}
+										schedule={flower.schedule}
+										handleCurrentFlowerChange={handleCurrentFlowerChange}
+										handleCurrentScheduleChange={handleCurrentWaterScheduleChange}
+									/>
+									<Spacing />
+								</>
+							)
+						})
+					) : (
+						<Placeholder
+							icon={<Icon56DoNotDisturbOutline />}
+							header="Нет подключенных горшков"
+							action={<Button size="m">Подключить горшок</Button>}
+						/>
+					)
+				) : selected === 'info' ? (
+					<div>hello</div>
+				) : (
+					<Placeholder
+						icon={<Icon56SearchLikeFilledOutline />}
+						header="Хотите подключить новый горшок?"
+						action={<Button size="m">Подключить горшок</Button>}
+					/>
+				)}
+			</Group>
 		</Panel>
 	)
 }

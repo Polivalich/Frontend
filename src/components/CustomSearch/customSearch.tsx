@@ -10,7 +10,8 @@ interface CustomSearchLogicSelectProps {
 		value: string
 		label: string
 	}[]
-	handleCurrentFlowerChange: (flowerName: string) => void
+	handleCurrentFlowerChange: (flowerName: string, potId: string) => void
+	potId: string
 }
 
 interface NewFlower {
@@ -23,37 +24,39 @@ const CustomSearchLogicSelect: React.FC<CustomSearchLogicSelectProps> = ({
 	currentChoosedFlower,
 	existingFlowers,
 	handleCurrentFlowerChange,
+	potId,
 }) => {
-	const [query, setQuery] = React.useState('0')
+	const [query, setQuery] = React.useState('')
 	const [currentFlower, setCurrentFlower] = React.useState<string>(currentChoosedFlower)
-	const [value, setValue] = React.useState(currentFlower)
-	const [currentValue, setCurrentValue] = React.useState('')
+	const [value, setValue] = React.useState('')
 	const [newExistingFlowers, setNewExistingFlowers] = React.useState<NewFlower[]>([])
 
 	React.useEffect(() => {
-		const filteredFlowers = existingFlowers.filter((flower) => {
-			setCurrentValue(value)
-			return flower.label !== currentFlower
+		existingFlowers.sort((flower1, flower2) => {
+			if (flower1.label === currentFlower) {
+				setValue(flower1.value)
+				return -1
+			} else if (flower2.label === currentFlower) {
+				setValue(flower2.value)
+				return 1
+			} else {
+				return 0
+			}
 		})
-		filteredFlowers.unshift({
-			value: currentValue,
-			label: currentFlower,
-		})
-		setNewExistingFlowers([...filteredFlowers])
+
+		setNewExistingFlowers([...existingFlowers])
 	}, [])
 
 	React.useEffect(() => {
 		newExistingFlowers.forEach((flower) => {
-			if (flower.value === value && flower.value !== '') {
-				handleCurrentFlowerChange(flower.label)
-				console.log(value, flower.label)
+			if (flower.value === value) {
+				handleCurrentFlowerChange(flower.label, potId)
 			}
 		})
-	}, [currentFlower])
+	}, [value])
 
 	const customSearchOptions = () => {
 		const options = [...newExistingFlowers]
-		console.log(options)
 		if (
 			query.length > 0 &&
 			!options.find((newExistingFlowers) => newExistingFlowers.value === query || newExistingFlowers.label === query)
@@ -78,6 +81,7 @@ const CustomSearchLogicSelect: React.FC<CustomSearchLogicSelectProps> = ({
 
 	const onCustomSearchInputChange = (e: any) => {
 		setQuery(e.target.value)
+		setCurrentFlower(e.target.label)
 	}
 
 	return (
