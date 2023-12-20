@@ -20,10 +20,10 @@ export const LayoutNav: FC<LayoutNavProps> = ({mode}) => (
 		</LayoutButton>
 		<LayoutButton
 			mode={mode}
-			story={URL.infoPanel}
+			story={URL.personalPanel}
 			before={<Icon28InfoOutline />}
 		>
-			О приложении
+			Профиль
 		</LayoutButton>
 	</Fragment>
 )

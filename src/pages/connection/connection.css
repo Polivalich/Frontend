@@ -1,0 +1,48 @@
+.connection_panel {
+    height: 100%;
+    width: 100%;
+}
+
+.connection_screen {
+    padding-top: 50px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.connection_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    gap: 16px;
+}
+
+.connection_form {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.connection_input {
+    padding: 8px 12px;
+    width: 100%;
+    border-radius: 5px;
+    border: solid 0.5px #889f76;
+}
+
+.connection_button {
+    width: 100%;
+    border-radius: 5px;
+    padding: 8px;
+    background: #889f76;
+    border: none;
+    cursor: pointer;
+    color: white;
+}

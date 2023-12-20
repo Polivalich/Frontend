@@ -8,6 +8,7 @@ export const envSchema = z.object({
 	API: z.string(),
 	NUMBER: z.coerce.number(),
 	BOOL: z.coerce.boolean(),
+	POT_API: z.string(),
 })
 
 // Функция для проверки ENV
