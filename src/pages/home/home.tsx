@@ -45,6 +45,7 @@ import {ApiService} from '@/services'
 import {useUserStore} from '@/store'
 import {Plant} from '@/models/api'
 import FlowerItem from '@/components/flowerItem/flowerItem'
+import FlowerInfo from '@/components/flowerInfo/FlowerInfo'
 
 const flowerInfo: any = [
 	{
@@ -228,7 +229,7 @@ export const Home: FC<NavIdProps> = (props) => {
 						/>
 					)
 				) : selected === 'info' ? (
-					<div>hello</div>
+					<FlowerInfo />
 				) : (
 					<Placeholder
 						icon={<Icon56SearchLikeFilledOutline />}

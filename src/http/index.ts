@@ -1,4 +1,4 @@
-import { ENV } from '@/env'
+import {ENV} from '@/env'
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -28,7 +28,7 @@ class Http {
 	// Инициализация настроек инстанса
 	initHttp() {
 		const http = axios.create({
-			baseURL: ENV.API,
+			baseURL: ENV.POT_API,
 			withCredentials: false,
 		})
 
@@ -103,7 +103,6 @@ class Http {
 	}
 }
 
-
 class Pot {
 	// Создание пустого инстанса Аксиоса, на который мы будем вешать все настройки
 	private instance: AxiosInstance | null = null
@@ -151,7 +150,6 @@ class Pot {
 		return this.http.delete<T, R>(url, config)
 	}
 }
-
 
 export const $api = new Http()
 export const $pot = new Pot()
